@@ -2,18 +2,45 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <algorithm>
-#include "vector"
+#include "BPlusTreeManager.cpp"
 
 using namespace std;
 
+const int BLOCKSIZE = 100;
+const int RECORDSIZE = 17;
+const int LEAFNODEKPPSIZE = 8;
+const int LEAFNODEPOINTERSIZE = 4;
+const int NODEPOINTERSIZE = 4;
+const int FLOATPOINTERSIZE = 4;
+const int N = 4;
+
+void Experiment1() {
+    return;
+}
+
+void Experiment2() {
+    return;
+}
+
+void Experiment3() {
+    return;
+}
+
+void Experiment4() {
+    return;
+}
+
+void Experiment5() {
+    return;
+}
 
 int main()
 {
-    string tconst;
-    string avg;
-    string vote;
+    DataBaseManager dbm = DataBaseManager();
     ifstream fileIn("./data2.tsv");
+    string tconst;
+    float avg;
+    int vote;
 
     if(!fileIn.is_open())
          cout << "file failed to open" << endl;
@@ -23,11 +50,18 @@ int main()
         lin.clear();
         lin.str(line);
         if (lin >> tconst >> avg >> vote)
-            cout << tconst << " " << avg << " " << vote << endl;
-        //getline(fileIn, tconst, ',');
-        //getline(fileIn, avg, ',');
-        //getline(fileIn, vote, '\n');
+        {
+            Record newRecord = Record(tconst, avg, vote);
+            dbm.addRecord(newRecord);
+        }
     }
+
+    fileIn.close();
+
+    BPlusTreeManager dpt = BPlusTreeManager(N);
+    float key;
+    dpt.buildTree(dbm.getBlockLocations(), dbm.getNoOfBlocks());
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

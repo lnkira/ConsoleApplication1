@@ -139,9 +139,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Block.cpp" />
+    <ClCompile Include="BPlusTreeManager.cpp" />
+    <ClCompile Include="BpNode.cpp" />
     <ClCompile Include="ConsoleApplication1.cpp" />
+    <ClCompile Include="DataBaseManager.cpp" />
+    <ClCompile Include="DataBlock.cpp" />
+    <ClCompile Include="Record.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="data.tsv" />
     <None Include="data2.tsv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
