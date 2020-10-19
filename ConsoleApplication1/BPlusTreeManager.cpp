@@ -15,7 +15,7 @@ class BPlusTreeManager {
 
     public: 
         BPlusTreeManager(int n) {
-            height = 0;
+            height = 1;
             order = n;
             rootNode = new BpNode(order);
         }
@@ -43,6 +43,7 @@ class BPlusTreeManager {
                         newNode->insert(nodePtr, order); //link new node to splitted nodes
                         newNode->setLeaf(false);
                         this->rootNode = newNode; //set new node as root node
+                        height++;
                         return 1;
                     }
                     return 0;
@@ -68,6 +69,7 @@ class BPlusTreeManager {
                             nodePtr->setChildrenNode(NULL, order);//unlink both non-leaf nodes
                             newNode->setLeaf(false);
                             this->rootNode = newNode; //set new node as root node
+                            height++;
                             return 1;
                         }
                         return 0;
@@ -76,9 +78,10 @@ class BPlusTreeManager {
             }
         }
 
-        int deleteRecord(BpNode* nodePtr, float key) {
+        Record* deleteRecord(BpNode* nodePtr, float key) {
+            Record* recordDeleted;
             if (nodePtr ->getIsLeaf() == true)
-                nodePtr->deleteKey(key);
+                recordDeleted = nodePtr->deleteKey(key);
             else { //search for leaf node
                 int i;
                 float* keys = nodePtr->getKeys();
@@ -86,15 +89,18 @@ class BPlusTreeManager {
                     if (key < keys[i]) //found index of children node
                         break;
                 }
-                this->deleteRecord(nodePtr->getChildPtr(i), key);
+                recordDeleted = this->deleteRecord(nodePtr->getChildPtr(i), key);
             }
+            return recordDeleted;
         }
-        int deleteRecord(float key) {
-            this->deleteRecord(this->rootNode, key);
+        Record* deleteRecord(float key) {
+            return this->deleteRecord(this->rootNode, key);
         }
 
         void getAllKey() {
             this->getAllKey(rootNode);
+            cout << "Height: " << height << endl;
+            cout << "No of nodes " << this->getNoOfNodes(rootNode) << endl;
         }
         void getAllKey(BpNode* nodePtr) {
             if (nodePtr->getIsLeaf() == true) {
@@ -117,6 +123,20 @@ class BPlusTreeManager {
                 for (int j = 0; j <= i; j++) {
                     getAllKey(nodePtr->getChildPtr(j));
                 }
+            }
+        }
+        int getNoOfNodes() {
+            return this->getNoOfNodes(this->rootNode);
+        }
+        int getNoOfNodes(BpNode* nodePtr) {
+            if (nodePtr->getIsLeaf() == true) {
+                return 1;
+            }
+            else {
+                int count = 1;
+                for (int i = 0; i <= nodePtr->getNoOfKey(); i++)
+                    count += getNoOfNodes(nodePtr->getChildPtr(i));
+                return count;
             }
         }
 

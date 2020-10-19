@@ -135,13 +135,14 @@ class BpNode {
 			int i;
 			Record* deletedRecord;
 			for (i = 0; i < keys.size(); i++) { // search for key to delete
-				if (key == keys[i]) //found key
+				if (key == keys[i]) {//found key
+					deletedRecord = recordPointer[i];
+					keys.erase(keys.begin() + i);
+					recordPointer.erase(recordPointer.begin() + i);
+					return deletedRecord; // successfully deleted
 					break;
+				}
 			}
-			deletedRecord = recordPointer[i];
-			keys.erase(keys.begin()+i);
-			recordPointer.erase(recordPointer.begin()+i);
-			return deletedRecord; // successfully deleted
 		}
 
 		BpNode* getChildPtr(int i) {

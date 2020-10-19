@@ -61,6 +61,10 @@ int main()
     BPlusTreeManager dpt = BPlusTreeManager(N);
     float key;
     dpt.buildTree(dbm.getBlockLocations(), dbm.getNoOfBlocks());
+    cout << "Enter rating to delete: ";
+    cin >> key;
+    Record* recordDeleted = dpt.deleteRecord(key);
+    dpt.getAllKey();
 
 }
 
